@@ -233,9 +233,9 @@ function HeroSection() {
             className="text-lg sm:text-xl text-gray-300 mb-10 max-w-2xl leading-relaxed"
             data-testid="text-hero-description"
           >
-            With over 120+ MW of solar installations, Dynamic Green Energy delivers
-            world-class EPC, O&M, and Installation & Commissioning solutions for a
-            sustainable tomorrow.
+            Tamil Nadu's trusted solar EPC developer with 120+ MW of installations
+            across Madurai, Tuticorin, Ramanathapuram, Tirunelveli, Chennai and beyond.
+            Delivering world-class solar solutions since 2018.
           </motion.p>
 
           <motion.div
@@ -835,6 +835,66 @@ function ContactSection() {
   );
 }
 
+function ServiceAreasSection() {
+  const districts = [
+    "Madurai", "Tuticorin", "Ramanathapuram", "Tirunelveli", "Dindigul",
+    "Ariyalur", "Chengalpattu", "Chennai", "Coimbatore", "Trichy",
+    "Salem", "Erode", "Vellore", "Thanjavur", "Cuddalore",
+    "Virudhunagar", "Tenkasi", "Nagercoil", "Sivagangai", "Pudukkottai",
+  ];
+
+  return (
+    <section className="py-16 bg-green-900" aria-label="Service areas in Tamil Nadu">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-10"
+        >
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3" data-testid="text-areas-title">
+            Serving All Across <span className="text-green-300">Tamil Nadu</span>
+          </h2>
+          <p className="text-green-200 text-base max-w-2xl mx-auto">
+            From Madurai to Chennai, we deliver solar solutions across every district of Tamil Nadu
+          </p>
+        </motion.div>
+
+        <div className="flex flex-wrap justify-center gap-3">
+          {districts.map((district, i) => (
+            <motion.div
+              key={district}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: i * 0.03 }}
+              data-testid={`badge-district-${district.toLowerCase()}`}
+            >
+              <span className="inline-flex items-center gap-1.5 bg-white/10 hover:bg-white/20 transition-colors border border-white/20 rounded-full px-4 py-2 text-sm text-white font-medium cursor-default">
+                <MapPin className="w-3.5 h-3.5 text-green-300 flex-shrink-0" />
+                {district}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="mt-10 grid sm:grid-cols-3 gap-4 text-center">
+          {[
+            { label: "Districts Covered", value: "20+" },
+            { label: "MW Installed in Tamil Nadu", value: "100+" },
+            { label: "Tamil Nadu Projects", value: "40+" },
+          ].map((item) => (
+            <div key={item.label} className="bg-white/10 border border-white/15 rounded-2xl p-5" data-testid={`text-tn-stat-${item.label.toLowerCase().replace(/\s/g, '-')}`}>
+              <div className="text-3xl font-bold text-green-300 mb-1">{item.value}</div>
+              <div className="text-white/80 text-sm">{item.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Footer() {
   return (
     <footer className="bg-gray-900 pt-16 pb-8">
@@ -924,6 +984,7 @@ export default function Home() {
       <TimelineSection />
       <LeadershipSection />
       <ContactSection />
+      <ServiceAreasSection />
       <Footer />
     </div>
   );
