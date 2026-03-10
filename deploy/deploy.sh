@@ -12,16 +12,16 @@ VPS_USER="root"
 APP_DIR="/var/www/dynamic-green-energy"
 LOG_DIR="/var/log/dge"
 
-echo "=> Building production bundle..."
+echo "=> Building production bundle locally..."
+npm install
 npm run build
 
-echo "=> Creating deployment package..."
+echo "=> Creating deployment package (pre-built dist only)..."
 tar -czf dge-deploy.tar.gz \
   dist/ \
   deploy/ecosystem.config.cjs \
   package.json \
-  package-lock.json \
-  --exclude="node_modules"
+  package-lock.json
 
 echo "=> Uploading to VPS at $VPS_IP..."
 scp dge-deploy.tar.gz $VPS_USER@$VPS_IP:/tmp/dge-deploy.tar.gz
@@ -33,13 +33,14 @@ ssh $VPS_USER@$VPS_IP bash << EOF
   # Create app and log directories
   mkdir -p $APP_DIR $LOG_DIR
 
-  # Extract the package
+  # Clear old files and extract the new package
+  rm -rf $APP_DIR/dist $APP_DIR/package.json $APP_DIR/package-lock.json $APP_DIR/ecosystem.config.cjs
   tar -xzf /tmp/dge-deploy.tar.gz -C $APP_DIR
   rm /tmp/dge-deploy.tar.gz
 
-  # Install only production dependencies
+  # Install ONLY production dependencies (no build tools needed — dist is pre-built)
   cd $APP_DIR
-  npm install --production --omit=dev
+  npm install --omit=dev --ignore-scripts
 
   # Copy PM2 ecosystem config to app root
   cp $APP_DIR/deploy/ecosystem.config.cjs $APP_DIR/ecosystem.config.cjs
@@ -59,4 +60,4 @@ EOF
 
 rm -f dge-deploy.tar.gz
 echo ""
-echo "Deployment finished. Your site should be live on http://$VPS_IP"
+echo "Deployment finished. Your site should be live at http://$VPS_IP"
