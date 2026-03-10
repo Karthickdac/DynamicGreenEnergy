@@ -34,3 +34,13 @@ A modern, responsive company website for Dynamic Green Energy, a solar energy EP
 
 ## Running
 - `npm run dev` starts the Express + Vite dev server
+
+## VPS Deployment
+Files in the `deploy/` folder:
+- `DEPLOY_GUIDE.md` — Step-by-step guide for VPS hosting
+- `deploy.sh` — One-command deployment script (run from local machine)
+- `ecosystem.config.cjs` — PM2 process manager config
+- `nginx.conf` — Nginx reverse proxy config with SSL comments
+
+Build command: `npm run build` → outputs to `dist/` (server: `dist/index.cjs`, frontend: `dist/public/`)
+Start command: `NODE_ENV=production node dist/index.cjs`
