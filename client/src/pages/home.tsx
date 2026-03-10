@@ -31,21 +31,21 @@ const services = [
     description: "End-to-end Engineering, Procurement, and Construction services for solar power plants. From design and integration to installation and commissioning, we deliver turnkey solutions.",
     icon: Sun,
     features: ["Design & Engineering", "Procurement", "Construction", "Commissioning"],
-    image: "/images/ground-mount.png",
+    image: "/images/ground-mount.jpg",
   },
   {
     title: "O&M Services",
     description: "Comprehensive Operation & Maintenance services covering both technical and non-technical aspects. We ensure your solar plant operates at peak efficiency.",
     icon: Wrench,
     features: ["AC/DC Maintenance", "Panel Cleaning", "SCADA Monitoring", "PR Calculation"],
-    image: "/images/maintenance.png",
+    image: "/images/maintenance.jpg",
   },
   {
     title: "Installation & Commissioning",
     description: "Expert installation and commissioning for both ground mount and rooftop solar projects. Our experienced team handles everything from survey to site handover.",
     icon: Settings,
     features: ["Ground Mount", "Rooftop Systems", "Cable Laying", "Testing & Handover"],
-    image: "/images/rooftop-solar.png",
+    image: "/images/rooftop-solar.jpg",
   },
 ];
 
@@ -192,9 +192,11 @@ function HeroSection() {
     <section id="home" className="relative min-h-screen flex items-center overflow-hidden">
       <div className="absolute inset-0">
         <img
-          src="/images/hero-solar.png"
+          src="/images/hero-solar.jpg"
           alt="Solar power plant"
           className="w-full h-full object-cover"
+          loading="eager"
+          fetchPriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 via-gray-900/70 to-gray-900/40" />
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-transparent" />
@@ -367,9 +369,10 @@ function AboutSection() {
           >
             <div className="relative rounded-3xl overflow-hidden shadow-2xl">
               <img
-                src="/images/about-bg.png"
+                src="/images/about-bg.jpg"
                 alt="Solar energy concept"
                 className="w-full h-[500px] object-cover"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-green-900/60 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-8">
@@ -455,6 +458,7 @@ function ServicesSection() {
                     src={service.image}
                     alt={service.title}
                     className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-700"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-green-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
