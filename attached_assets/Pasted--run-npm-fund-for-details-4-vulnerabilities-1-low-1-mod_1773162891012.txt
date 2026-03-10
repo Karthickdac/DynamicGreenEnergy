@@ -1,0 +1,270 @@
+  run `npm fund` for details
+
+4 vulnerabilities (1 low, 1 moderate, 2 high)
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+
+> rest-express@1.0.0 build
+> tsx script/build.ts
+
+building client...
+vite v7.3.0 building client environment for production...
+transforming (4) src/App.tsx
+A PostCSS plugin did not pass the `from` option to `postcss.parse`. This may cause imported assets to be incorrectly transformed. If you've recently added a PostCSS plugin that raised this warning, please contact the package author to fix the issue.
+✓ 1997 modules transformed.
+../dist/public/index.html                                                                    9.21 kB │ gzip:   2.64 kB
+../dist/public/assets/WhatsApp_Image_2026-03-10_at_9.58.53_PM_1773160168323-BM48YEUb.jpeg   28.14 kB
+../dist/public/assets/index-BcvlX4Se.css                                                    81.49 kB │ gzip:  12.83 kB
+../dist/public/assets/index-DXkjCz7m.js                                                    408.62 kB │ gzip: 130.83 kB
+✓ built in 8.09s
+building server...
+
+  dist/index.cjs  815.5kb
+
+⚡ Done in 304ms
+npm warn config production Use `--omit=dev` instead.
+
+up to date, audited 371 packages in 1s
+
+61 packages are looking for funding
+  run `npm fund` for details
+
+3 vulnerabilities (1 low, 1 moderate, 1 high)
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+[PM2][WARN] Applications dynamic-green-energy not running, starting...
+[PM2] App [dynamic-green-energy] launched (2 instances)
+┌────┬─────────────────────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+│ id │ name                    │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
+├────┼─────────────────────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤
+│ 15 │ dynamic-green-energy    │ default     │ 1.0.0   │ cluster │ 1329335  │ 0s     │ 0    │ online    │ 0%       │ 53.4mb   │ root     │ disabled │
+│ 16 │ dynamic-green-energy    │ default     │ 1.0.0   │ cluster │ 1329342  │ 0s     │ 0    │ online    │ 0%       │ 45.0mb   │ root     │ disabled │
+│ 14 │ fish-market-pro         │ default     │ 1.0.0   │ cluster │ 1094113  │ 8D     │ 1    │ online    │ 0%       │ 122.6mb  │ root     │ disabled │
+│ 6  │ fitro360                │ default     │ 0.39.7  │ fork    │ 736309   │ 21D    │ 2    │ online    │ 0%       │ 75.1mb   │ root     │ disabled │
+│ 2  │ kyro360                 │ default     │ 1.0.0   │ fork    │ 1089834  │ 8D     │ 3    │ online    │ 0%       │ 276.8mb  │ root     │ disabled │
+└────┴─────────────────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
+[PM2] Saving current process list...
+[PM2] Successfully saved in /root/.pm2/dump.pm2
+root@srv1286649:/home/dynamicgreenenergy/htdocs/www.dynamicgreenenergy.in/dynamicgreenenergy# # Copy the nginx config
+cp deploy/nginx.conf /etc/nginx/sites-available/dynamic-green-energy
+
+# Enable the site
+ln -s /etc/nginx/sites-available/dynamic-green-energy /etc/nginx/sites-enabled/
+
+# Test config is valid
+nginx -t
+
+# Reload nginx
+systemctl reload nginx
+nginx: [warn] "ssl_stapling" ignored, issuer certificate not found for certificate "/etc/nginx/ssl-certificates/www.dynamicgreenenergy.in.crt"
+nginx: [warn] "ssl_stapling" ignored, issuer certificate not found for certificate "/etc/nginx/ssl-certificates/www.dynamicgreenenergy.in.crt"
+nginx: [warn] "ssl_stapling" ignored, no OCSP responder URL in the certificate "/etc/letsencrypt/live/fishtrading.in/fullchain.pem"
+nginx: [warn] "ssl_stapling" ignored, no OCSP responder URL in the certificate "/etc/letsencrypt/live/fishtrading.in/fullchain.pem"
+nginx: [warn] "ssl_stapling" ignored, no OCSP responder URL in the certificate "/etc/letsencrypt/live/fitro360.com/fullchain.pem"
+nginx: [warn] "ssl_stapling" ignored, no OCSP responder URL in the certificate "/etc/letsencrypt/live/fitro360.com/fullchain.pem"
+nginx: [warn] "ssl_stapling" ignored, no OCSP responder URL in the certificate "/etc/nginx/ssl-certificates/www.kyro360.com.crt"
+nginx: [warn] "ssl_stapling" ignored, no OCSP responder URL in the certificate "/etc/nginx/ssl-certificates/www.kyro360.com.crt"
+nginx: [warn] "ssl_stapling" ignored, issuer certificate not found for certificate "/etc/nginx/ssl-certificates/www.kyrotrade.com.crt"
+nginx: [warn] "ssl_stapling" ignored, issuer certificate not found for certificate "/etc/nginx/ssl-certificates/www.kyrotrade.com.crt"
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+root@srv1286649:/home/dynamicgreenenergy/htdocs/www.dynamicgreenenergy.in/dynamicgreenenergy# # Should show your app running
+pm2 status
+
+# Should return your website HTML
+curl http://localhost:6000
+┌────┬─────────────────────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+│ id │ name                    │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
+├────┼─────────────────────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤
+│ 15 │ dynamic-green-energy    │ default     │ 1.0.0   │ cluster │ 1329335  │ 83s    │ 0    │ online    │ 0%       │ 75.1mb   │ root     │ disabled │
+│ 16 │ dynamic-green-energy    │ default     │ 1.0.0   │ cluster │ 1329342  │ 83s    │ 0    │ online    │ 0%       │ 76.0mb   │ root     │ disabled │
+│ 14 │ fish-market-pro         │ default     │ 1.0.0   │ cluster │ 1094113  │ 8D     │ 1    │ online    │ 0%       │ 122.6mb  │ root     │ disabled │
+│ 6  │ fitro360                │ default     │ 0.39.7  │ fork    │ 736309   │ 21D    │ 2    │ online    │ 0%       │ 75.1mb   │ root     │ disabled │
+│ 2  │ kyro360                 │ default     │ 1.0.0   │ fork    │ 1089834  │ 8D     │ 3    │ online    │ 0%       │ 276.8mb  │ root     │ disabled │
+└────┴─────────────────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+    <!-- Primary SEO -->
+    <title>Dynamic Green Energy | Solar EPC Company in Madurai, Tamil Nadu | Solar Power Plant Developers</title>
+    <meta name="description" content="Dynamic Green Energy - Tamil Nadu's leading solar EPC developer based in Madurai. 120+ MW solar installations across Tamil Nadu including Tuticorin, Ramanathapuram, Dindigul, Ariyalur, Tirunelveli & more. Ground mount & rooftop solar solutions. Call +91 80728 24034." />
+    <meta name="keywords" content="solar company Tamil Nadu, solar EPC contractor Madurai, solar power plant Tamil Nadu, ground mount solar Tamil Nadu, rooftop solar Madurai, solar installation Tamil Nadu, solar project developer Madurai, EPC solar company Tamil Nadu, solar O&M Tamil Nadu, solar commissioning Tamil Nadu, Dynamic Green Energy, solar energy Madurai, renewable energy Tamil Nadu, solar panel installation Madurai, solar plant Tuticorin, solar plant Ramanathapuram, solar plant Dindigul, solar plant Tirunelveli, solar company Coimbatore, solar energy Tamil Nadu, வணிக சூரிய ஆற்றல் தமிழ்நாடு" />
+    <meta name="author" content="Dynamic Green Energy" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Geographic / Local SEO -->
+    <meta name="geo.region" content="IN-TN" />
+    <meta name="geo.placename" content="Madurai, Tamil Nadu, India" />
+    <meta name="geo.position" content="9.9252;78.1198" />
+    <meta name="ICBM" content="9.9252, 78.1198" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="business.business" />
+    <meta property="og:title" content="Dynamic Green Energy | Solar EPC Company in Madurai, Tamil Nadu" />
+    <meta property="og:description" content="Tamil Nadu's trusted solar project developers with 120+ MW installed. Expert EPC, O&M, and Installation & Commissioning services across Tamil Nadu since 2018." />
+    <meta property="og:site_name" content="Dynamic Green Energy" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="business:contact_data:street_address" content="Flat No. 189, Thamirabarani Street, Park Town" />
+    <meta property="business:contact_data:locality" content="Madurai" />
+    <meta property="business:contact_data:region" content="Tamil Nadu" />
+    <meta property="business:contact_data:postal_code" content="625017" />
+    <meta property="business:contact_data:country_name" content="India" />
+    <meta property="business:contact_data:phone_number" content="+918072824034" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Dynamic Green Energy | Solar EPC Company in Tamil Nadu" />
+    <meta name="twitter:description" content="Tamil Nadu's trusted solar project developers — 120+ MW installed. EPC, O&M, I&C services across Tamil Nadu since 2018." />
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://dynamicgreenenergy.in/" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon.png" />
+
+    <!-- Local Business Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "@id": "https://dynamicgreenenergy.in/",
+      "name": "Dynamic Green Energy",
+      "alternateName": "DGE",
+      "description": "Tamil Nadu's leading solar EPC developer offering ground mount and rooftop solar power plant installation, O&M services, and Installation & Commissioning across Tamil Nadu.",
+      "url": "https://dynamicgreenenergy.in/",
+      "logo": "https://dynamicgreenenergy.in/favicon.png",
+      "image": "https://dynamicgreenenergy.in/images/hero-solar.png",
+      "foundingDate": "2018-06",
+      "numberOfEmployees": "100",
+      "telephone": "+918072824034",
+      "email": "dynamicmdu2018@gmail.com",
+      "taxID": "33ATLPV5789M1ZK",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Flat No. 189, Thamirabarani Street, Park Town",
+        "addressLocality": "Madurai",
+        "addressRegion": "Tamil Nadu",
+        "postalCode": "625017",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "9.9252",
+        "longitude": "78.1198"
+      },
+      "areaServed": [
+        { "@type": "State", "name": "Tamil Nadu" },
+        { "@type": "City", "name": "Madurai" },
+        { "@type": "City", "name": "Tuticorin" },
+        { "@type": "City", "name": "Ramanathapuram" },
+        { "@type": "City", "name": "Tirunelveli" },
+        { "@type": "City", "name": "Dindigul" },
+        { "@type": "City", "name": "Ariyalur" },
+        { "@type": "City", "name": "Chennai" },
+        { "@type": "City", "name": "Chengalpattu" },
+        { "@type": "City", "name": "Visakhapatnam" },
+        { "@type": "Country", "name": "India" }
+      ],
+      "serviceType": [
+        "Solar EPC Development",
+        "Solar O&M Services",
+        "Solar Installation and Commissioning",
+        "Ground Mount Solar",
+        "Rooftop Solar",
+        "Solar Power Plant",
+        "Renewable Energy"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Solar Energy Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Solar EPC (Engineering, Procurement & Construction)",
+              "description": "Complete turnkey solar power plant development from design to commissioning"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Solar O&M (Operations & Maintenance)",
+              "description": "Comprehensive technical and non-technical maintenance for solar plants"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Solar Installation & Commissioning",
+              "description": "Ground mount and rooftop solar installation across Tamil Nadu"
+            }
+          }
+        ]
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "50"
+      },
+      "sameAs": []
+    }
+    </script>
+
+    <!-- Breadcrumb Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://dynamicgreenenergy.in/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Solar Services Tamil Nadu",
+          "item": "https://dynamicgreenenergy.in/#services"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Solar Projects Tamil Nadu",
+          "item": "https://dynamicgreenenergy.in/#projects"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Contact",
+          "item": "https://dynamicgreenenergy.in/#contact"
+        }
+      ]
+    }
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fira+Code:wght@300..700&family=Geist+Mono:wght@100..900&family=Geist:wght@100..900&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400..700;1,400..700&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Outfit:wght@100..900&family=Oxanium:wght@200..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="/assets/index-DXkjCz7m.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BcvlX4Se.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
+root@srv1286649:/home/dynamicgreenenergy/htdocs/www.dynamicgreenenergy.in/dynamicgreenenergy# 
