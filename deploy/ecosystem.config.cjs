@@ -7,7 +7,7 @@ module.exports = {
       exec_mode: "cluster",
       env_production: {
         NODE_ENV: "production",
-        PORT: 5000,
+        PORT: 6000,
       },
       error_file: "/var/log/dge/error.log",
       out_file: "/var/log/dge/out.log",
