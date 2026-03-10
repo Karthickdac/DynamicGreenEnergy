@@ -1,0 +1,25 @@
+
+Deploying certificate
+Successfully deployed certificate for dynamicgreenenergy.in to /etc/nginx/sites-enabled/www.dynamicgreenenergy.in.conf
+Successfully deployed certificate for www.dynamicgreenenergy.in to /etc/nginx/sites-enabled/www.dynamicgreenenergy.in.conf
+We were unable to restart web server
+
+NEXT STEPS:
+- The certificate was saved, but could not be installed (installer: nginx). After fixing the error shown below, try installing it again by running:
+  certbot install --cert-name dynamicgreenenergy.in
+
+nginx restart failed:
+nginx: [warn] "ssl_stapling" ignored, no OCSP responder URL in the certificate "/etc/letsencrypt/live/dynamicgreenenergy.in/fullchain.pem"
+nginx: [warn] "ssl_stapling" ignored, no OCSP responder URL in the certificate "/etc/letsencrypt/live/dynamicgreenenergy.in/fullchain.pem"
+nginx: [warn] "ssl_stapling" ignored, no OCSP responder URL in the certificate "/etc/letsencrypt/live/fishtrading.in/fullchain.pem"
+nginx: [warn] "ssl_stapling" ignored, no OCSP responder URL in the certificate "/etc/letsencrypt/live/fishtrading.in/fullchain.pem"
+nginx: [warn] "ssl_stapling" ignored, no OCSP responder URL in the certificate "/etc/letsencrypt/live/fitro360.com/fullchain.pem"
+nginx: [warn] "ssl_stapling" ignored, no OCSP responder URL in the certificate "/etc/letsencrypt/live/fitro360.com/fullchain.pem"
+nginx: [warn] "ssl_stapling" ignored, no OCSP responder URL in the certificate "/etc/nginx/ssl-certificates/www.kyro360.com.crt"
+nginx: [warn] "ssl_stapling" ignored, no OCSP responder URL in the certificate "/etc/nginx/ssl-certificates/www.kyro360.com.crt"
+nginx: [warn] "ssl_stapling" ignored, issuer certificate not found for certificate "/etc/nginx/ssl-certificates/www.kyrotrade.com.crt"
+nginx: [warn] "ssl_stapling" ignored, issuer certificate not found for certificate "/etc/nginx/ssl-certificates/www.kyrotrade.com.crt"
+nginx: [emerg] no "ssl_certificate" is defined for the "listen ... quic" directive in /etc/nginx/sites-enabled/www.dynamicgreenenergy.in.conf:64
+
+Ask for help or search for solutions at https://community.letsencrypt.org. See the logfile /var/log/letsencrypt/letsencrypt.log or re-run Certbot with -v for more details.
+root@srv1286649:/home/dynamicgreenenergy/htdocs/www.dynamicgreenenergy.in/dynamicgreenenergy# 
