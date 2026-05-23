@@ -5,22 +5,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/home";
 import NotFound from "@/pages/not-found";
-import Quotations from "@/pages/quotations";
-import QuotationForm from "@/pages/quotation-form";
-import QuotationDetail from "@/pages/quotation-detail";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/quotations" component={Quotations} />
-      <Route path="/quotations/new">
-        {() => <QuotationForm isEdit={false} />}
-      </Route>
-      <Route path="/quotations/:id/edit">
-        {() => <QuotationForm isEdit={true} />}
-      </Route>
-      <Route path="/quotations/:id" component={QuotationDetail} />
       <Route component={NotFound} />
     </Switch>
   );
