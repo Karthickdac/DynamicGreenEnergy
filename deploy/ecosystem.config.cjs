@@ -1,16 +1,17 @@
 module.exports = {
   apps: [
     {
-      name: "dynamic-green-energy",
+      name: "dge-erp",
       script: "./dist/index.cjs",
-      instances: "max",
-      exec_mode: "cluster",
+      cwd: "/home/dynamicgreenenergy-erp/htdocs/erp.dynamicgreenenergy.in",
+      instances: 1,
+      exec_mode: "fork",
       env_production: {
         NODE_ENV: "production",
-        PORT: 6000,
+        PORT: 6100,
       },
-      error_file: "/var/log/dge/error.log",
-      out_file: "/var/log/dge/out.log",
+      error_file: "/home/dynamicgreenenergy-erp/logs/error.log",
+      out_file: "/home/dynamicgreenenergy-erp/logs/out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss",
       max_memory_restart: "500M",
       restart_delay: 3000,

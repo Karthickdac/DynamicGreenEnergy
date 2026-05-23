@@ -1,119 +1,95 @@
-# VPS Deployment Guide — Dynamic Green Energy
+# VPS Deployment Guide — DGE ERP
 
-## What You Need
-
-- A VPS running **Ubuntu 20.04 / 22.04** with Node.js 18+ and Nginx installed
-- PM2 installed globally: `npm install -g pm2`
-- SSH access to your VPS
-
----
-
-## The Core Rule — Build Locally, Upload Pre-Built
-
-> **Never run `npm run build` on the VPS directly.**
-> The build tool (`esbuild`) is a dev dependency and is not installed when you do
-> `npm install --production`. Always build on your local machine first.
+**VPS path:** `/home/dynamicgreenenergy-erp/htdocs/erp.dynamicgreenenergy.in`  
+**Domain:** `erp.dynamicgreenenergy.in`  
+**Port:** `6100`  
+**GitHub:** `https://github.com/Karthickdac/DynamicGreenEnergy`
 
 ---
 
-## METHOD A — Automated (recommended)
+## First-Time Setup (run once on VPS)
 
-Run this single command on your **local machine**:
+SSH into your VPS, then run:
 
 ```bash
-bash deploy/deploy.sh YOUR_VPS_IP
-```
+# 1. Install Node.js 20 (if not already installed)
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
 
-This will:
-1. Run `npm install` + `npm run build` locally
-2. Package only the pre-built `dist/` folder (no dev tools included)
-3. Upload and start/reload the app on your VPS via PM2
+# 2. Install PM2 globally
+sudo npm install -g pm2
 
----
+# 3. Clone the repo into the correct folder
+mkdir -p /home/dynamicgreenenergy-erp/htdocs
+cd /home/dynamicgreenenergy-erp/htdocs
+git clone https://github.com/Karthickdac/DynamicGreenEnergy erp.dynamicgreenenergy.in
 
-## METHOD B — Manual Steps (if you uploaded source code to VPS)
+# 4. Create log directory
+mkdir -p /home/dynamicgreenenergy-erp/logs
 
-If you already copied the source code onto the VPS, run these commands **on the VPS**:
-
-```bash
-cd /home/dynamicgreenenergy/htdocs/www.dynamicgreenenergy.in/dynamicgreenenergy
-
-# Step 1: Install ALL dependencies (including devDependencies needed for build)
+# 5. Install dependencies and build
+cd /home/dynamicgreenenergy-erp/htdocs/erp.dynamicgreenenergy.in
 npm install
-
-# Step 2: Build the production bundle
 npm run build
 
-# Step 3: Remove dev dependencies to save space (optional but recommended)
-npm prune --production
-
-# Step 4: Create log directory
-mkdir -p /var/log/dge
-
-# Step 5: Copy PM2 config and start the app
-cp deploy/ecosystem.config.cjs ecosystem.config.cjs
-pm2 start ecosystem.config.cjs --env production
+# 6. Start the app with PM2
+pm2 start deploy/ecosystem.config.cjs --env production
 pm2 save
+pm2 startup   # follow the printed command to enable auto-start on reboot
 ```
 
 ---
 
-## Configure Nginx (add this site alongside your existing 3 apps)
+## Updating After a Code Change (pull & rebuild)
+
+SSH into your VPS and run:
 
 ```bash
-# Copy the config (won't touch your existing sites)
-cp deploy/nginx.conf /etc/nginx/sites-available/dynamic-green-energy
-ln -s /etc/nginx/sites-available/dynamic-green-energy /etc/nginx/sites-enabled/
+cd /home/dynamicgreenenergy-erp/htdocs/erp.dynamicgreenenergy.in
 
-# Test and reload (safe — won't restart other sites)
-nginx -t && systemctl reload nginx
+git pull origin main
+npm install
+npm run build
+pm2 reload dge-erp --env production
 ```
 
-> Make sure to update the `server_name` in `deploy/nginx.conf` to your actual domain.
+That's it — zero downtime reload.
 
 ---
 
-## Set Up Free SSL with Let's Encrypt
+## Nginx Setup (run once)
 
 ```bash
-apt install -y certbot python3-certbot-nginx
-certbot --nginx -d dynamicgreenenergy.in -d www.dynamicgreenenergy.in
-```
+# Copy the config
+sudo cp /home/dynamicgreenenergy-erp/htdocs/erp.dynamicgreenenergy.in/deploy/nginx.conf \
+        /etc/nginx/sites-available/dge-erp
 
----
+# Enable it
+sudo ln -s /etc/nginx/sites-available/dge-erp /etc/nginx/sites-enabled/
 
-## Updating the Website in Future
-
-From your local machine:
-
-```bash
-bash deploy/deploy.sh YOUR_VPS_IP
-```
-
-Or manually on the VPS:
-
-```bash
-cd /path/to/your/app
-npm install        # full install (needed for esbuild)
-npm run build      # build the app
-npm prune --production  # clean up dev deps
-pm2 reload ecosystem.config.cjs --env production
+# Test and reload (safe — won't affect other sites)
+sudo nginx -t && sudo systemctl reload nginx
 ```
 
 ---
 
-## Quick Verify
+## SSL with Let's Encrypt (run once after DNS is pointing to the VPS)
 
 ```bash
-# Check the app is running on port 6000
-pm2 status
-curl http://localhost:6000
+sudo apt install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d erp.dynamicgreenenergy.in
+```
 
-# Check Nginx is forwarding correctly
-curl http://dynamicgreenenergy.in
+Certbot will automatically update nginx.conf with HTTPS settings.
 
-# View live logs
-pm2 logs dynamic-green-energy
+---
+
+## Quick Health Check
+
+```bash
+pm2 status                          # app should show "online"
+curl http://localhost:6100          # should return HTML
+pm2 logs dge-erp --lines 50        # live logs
 ```
 
 ---
@@ -122,7 +98,7 @@ pm2 logs dynamic-green-energy
 
 | Error | Cause | Fix |
 |-------|-------|-----|
-| `Cannot find package 'esbuild'` | Ran `npm install --production` before building | Run `npm install` (full) then `npm run build` |
-| `EADDRINUSE: port 6000` | Another app is using port 6000 | Change PORT in `ecosystem.config.cjs` to a free port |
-| `502 Bad Gateway` | Node app not running | Check `pm2 status` and `pm2 logs` |
-| `nginx: [emerg] duplicate` | Two sites with same `server_name` | Check existing Nginx site configs |
+| `Cannot find package 'esbuild'` | Ran `npm install --production` | Run plain `npm install` then `npm run build` |
+| `EADDRINUSE: port 6100` | Port taken by another app | Change PORT in `deploy/ecosystem.config.cjs` |
+| `502 Bad Gateway` | Node app not running | Check `pm2 status` and `pm2 logs dge-erp` |
+| `git pull` asks for password | No credentials cached | Use `git config credential.helper store` or a deploy key |
