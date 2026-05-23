@@ -1,0 +1,45 @@
+[PM2] Applying action deleteProcessId on app [all](ids: [
+  2, 3,  4, 5,
+  7, 9, 13
+])
+[PM2] [kyro360](7) ✓
+[PM2] [dynamic-green-energy](4) ✓
+[PM2] [dynamic-green-energy](3) ✓
+[PM2] [fitro360](2) ✓
+[PM2] [dgenergy-api](9) ✓
+[PM2] [kuralai](13) ✓
+[PM2] [fish-market-pro](5) ✓
+[PM2] [v] All Applications Stopped
+[PM2] [v] PM2 Daemon Stopped
+[PM2] Spawning PM2 daemon with pm2_home=/root/.pm2
+[PM2] Restoring processes located in /root/.pm2/dump.pm2
+[PM2] Process /home/fitro360/htdocs/www.fitro360.com/fitro360/dist/index.cjs restored
+[PM2] Process /home/dynamicgreenenergy/htdocs/www.dynamicgreenenergy.in/dynamicgreenenergy/dist/index.cjs restored
+[PM2] Process /home/fishtrading/htdocs/fishtrading.in/fishtrading/dist/index.js restored
+[PM2] Process /home/dynamicgreenenergy/htdocs/www.dynamicgreenenergy.in/dynamicgreenenergy/dist/index.cjs restored
+[PM2] Process /home/kyro360/htdocs/www.kyro360.com/kyro360/dist/index.cjs restored
+[PM2] Process /usr/bin/bash restored
+[PM2] Process /home/artificialintellizence/htdocs/www.artificialintellizence.com/kuralai/src/server.js restored
+>>>>>>>>>> PM2 updated
+^C
+[PM2] Spawning PM2 daemon with pm2_home=/root/.pm2
+[PM2] PM2 Successfully daemonized
+[PM2][ERROR] Process or Namespace dynamic-green-energy not found
+[PM2] Starting /home/dynamicgreenenergy-erp/htdocs/erp.dynamicgreenenergy.in/dist/index.cjs in fork_mode (1 instance)
+[PM2] Done.
+┌────┬────────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+│ id │ name       │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
+├────┼────────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤
+│ 0  │ dge-erp    │ default     │ 1.0.0   │ fork    │ 711180   │ 0s     │ 0    │ online    │ 0%       │ 30.4mb   │ root     │ disabled │
+└────┴────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
+[PM2] Saving current process list...
+[PM2] Successfully saved in /root/.pm2/dump.pm2
+┌────┬────────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+│ id │ name       │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
+├────┼────────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤
+│ 0  │ dge-erp    │ default     │ 1.0.0   │ fork    │ 711180   │ 0s     │ 0    │ online    │ 0%       │ 70.4mb   │ root     │ disabled │
+└────┴────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+root@srv1286649:/home/dynamicgreenenergy-erp/htdocs/erp.dynamicgreenenergy.in# 
