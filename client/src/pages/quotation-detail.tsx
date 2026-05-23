@@ -23,10 +23,10 @@ function calcGST(qty: number, rate: number, disc: number, gst: number) {
 }
 
 const STATUS_STYLE: Record<string, { bg: string; text: string; label: string }> = {
-  draft:    { bg: "#F3F4F6", text: "#374151", label: "Draft" },
-  sent:     { bg: "#EFF6FF", text: "#1D4ED8", label: "Sent" },
-  approved: { bg: "#F0FDF4", text: "#15803D", label: "Approved" },
-  rejected: { bg: "#FEF2F2", text: "#B91C1C", label: "Rejected" },
+  draft:    { bg: "#F3F4F6", text: "#374151", label: "DRAFT" },
+  sent:     { bg: "#DBEAFE", text: "#1D4ED8", label: "SENT" },
+  approved: { bg: "#DCFCE7", text: "#15803D", label: "APPROVED" },
+  rejected: { bg: "#FEE2E2", text: "#B91C1C", label: "REJECTED" },
 };
 
 export default function QuotationDetail() {
@@ -39,7 +39,7 @@ export default function QuotationDetail() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center text-gray-400">
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
         Loading quotation…
       </div>
     );
@@ -48,8 +48,8 @@ export default function QuotationDetail() {
   if (!quotation) {
     return (
       <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center gap-4">
-        <p className="text-gray-600">Quotation not found.</p>
-        <Button variant="outline" onClick={() => navigate("/quotations")}>
+        <p className="text-gray-600 text-sm">Quotation not found.</p>
+        <Button variant="outline" size="sm" onClick={() => navigate("/quotations")}>
           <ArrowLeft className="w-4 h-4 mr-2" /> Back to Quotations
         </Button>
       </div>
@@ -60,219 +60,281 @@ export default function QuotationDetail() {
   const totalGST = quotation.items.reduce((s, it) => s + calcGST(it.qty, it.rate, it.discountPercent, it.gstPercent), 0);
   const totalDiscount = quotation.items.reduce((s, it) => s + it.qty * it.rate * (it.discountPercent / 100), 0);
   const grandTotal = subtotal + totalGST;
-
   const statusStyle = STATUS_STYLE[quotation.status] || STATUS_STYLE.draft;
 
   return (
-    <div className="min-h-screen bg-[#e8edf2] print:bg-white">
-
-      {/* Toolbar — hidden on print */}
-      <div className="no-print bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between sticky top-0 z-10 shadow-sm">
-        <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm" className="text-gray-500 gap-1" onClick={() => navigate("/quotations")}>
-            <ChevronLeft className="w-4 h-4" /> All Quotations
-          </Button>
-          <div className="h-5 w-px bg-gray-200" />
-          <span className="text-sm font-semibold text-gray-700 font-mono">{quotation.number}</span>
-          <span
-            className="text-xs font-semibold px-2.5 py-0.5 rounded-full capitalize"
-            style={{ background: statusStyle.bg, color: statusStyle.text }}
-          >
-            {statusStyle.label}
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-1.5 text-gray-600"
-            onClick={() => navigate(`/quotations/${params.id}/edit`)}
-            data-testid="button-edit"
-          >
-            <Pencil className="w-3.5 h-3.5" /> Edit
-          </Button>
-          <Button
-            size="sm"
-            className="gap-1.5 bg-green-600 hover:bg-green-700 text-white"
-            onClick={() => window.print()}
-            data-testid="button-print"
-          >
-            <Printer className="w-3.5 h-3.5" /> Print / PDF
-          </Button>
-        </div>
-      </div>
-
-      {/* Document */}
-      <div className="py-8 px-4 print:py-0 print:px-0">
-        <div
-          className="bg-white mx-auto shadow-lg print:shadow-none"
-          style={{ width: "210mm", minHeight: "297mm", boxSizing: "border-box", padding: "18mm 18mm 14mm 18mm" }}
-          id="quotation-document"
-        >
-          {/* ── Header ── */}
-          <div style={{ display: "flex", alignItems: "flex-start", marginBottom: "6mm", gap: "6mm" }}>
-            <img
-              src="/images/logo.png"
-              alt="Dynamic Green Energy"
-              style={{ width: "22mm", height: "22mm", objectFit: "contain", flexShrink: 0 }}
-            />
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: "16pt", fontWeight: 700, color: "#1a3c2e", lineHeight: 1.2, fontFamily: "Poppins, sans-serif" }}>
-                M/s. Dynamic Green Energy
-              </div>
-              <div style={{ fontSize: "8pt", color: "#16a34a", fontStyle: "italic", marginBottom: "3mm", fontFamily: "Poppins, sans-serif" }}>
-                Reliable Solar Project Developers
-              </div>
-              <div style={{ fontSize: "7.5pt", color: "#374151", lineHeight: 1.7, fontFamily: "Poppins, sans-serif" }}>
-                Flat No: 189, Thamirabarani Street, Park Town, Madurai – 625017, Tamil Nadu, India<br />
-                Tel: +91 80728 24034 &nbsp;•&nbsp; dynamicmdu2018@gmail.com &nbsp;•&nbsp; www.dynamicgreenenergy.in<br />
-                <strong>GSTIN:</strong> 33ATLPV5789M1ZK
-              </div>
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div style={{ borderTop: "1.5px solid #1a3c2e", marginBottom: "5mm" }} />
-
-          {/* ── Quotation Meta ── */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "5mm" }}>
-            <div>
-              <div style={{ fontSize: "13pt", fontWeight: 700, color: "#111827", fontFamily: "Poppins, sans-serif" }}>
-                Quotation {quotation.number}
-              </div>
-              <div style={{ fontSize: "8.5pt", color: "#4B5563", marginTop: "1.5mm", fontFamily: "Poppins, sans-serif" }}>
-                {quotation.type}
-              </div>
-            </div>
-            <div
-              style={{
-                fontSize: "7.5pt",
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.04em",
-                padding: "2mm 4mm",
-                borderRadius: "3mm",
-                background: statusStyle.bg,
-                color: statusStyle.text,
-                fontFamily: "Poppins, sans-serif",
-              }}
-            >
-              {statusStyle.label}
-            </div>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2mm 8mm", marginBottom: "6mm", fontSize: "8.5pt", fontFamily: "Poppins, sans-serif" }}>
-            <div>
-              <span style={{ color: "#6B7280", fontWeight: 600 }}>Customer: </span>
-              <span style={{ color: "#111827", fontWeight: 600 }}>{quotation.customerName}</span>
-            </div>
-            <div>
-              <span style={{ color: "#6B7280", fontWeight: 600 }}>Created: </span>
-              <span style={{ color: "#111827" }}>{formatDate(quotation.createdDate)}</span>
-            </div>
-            <div>
-              <span style={{ color: "#6B7280", fontWeight: 600 }}>Valid Until: </span>
-              <span style={{ color: "#111827" }}>{formatDate(quotation.validUntil)}</span>
-            </div>
-          </div>
-
-          {/* ── Items Table ── */}
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "8pt", fontFamily: "Poppins, sans-serif", marginBottom: "5mm" }}>
-            <thead>
-              <tr style={{ background: "#1a3c2e", color: "#ffffff" }}>
-                {["#", "Item Description", "Qty", "Unit", "Rate (₹)", "Disc%", "GST%", "Amount (₹)"].map((h, i) => (
-                  <th
-                    key={h}
-                    style={{
-                      padding: "3mm 2.5mm",
-                      textAlign: i === 0 ? "center" : i >= 4 ? "right" : "left",
-                      fontWeight: 600,
-                      fontSize: "7.5pt",
-                      letterSpacing: "0.02em",
-                      whiteSpace: "nowrap",
-                      width: i === 0 ? "6mm" : i === 1 ? "auto" : undefined,
-                    }}
-                  >
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {quotation.items.map((item, idx) => {
-                const amount = calcAmount(item.qty, item.rate, item.discountPercent);
-                const isEven = idx % 2 === 0;
-                return (
-                  <tr key={item.id} style={{ background: isEven ? "#ffffff" : "#f9fafb" }}>
-                    <td style={{ padding: "2.5mm 2.5mm", textAlign: "center", color: "#6B7280", borderBottom: "0.5px solid #E5E7EB" }}>{idx + 1}</td>
-                    <td style={{ padding: "2.5mm 2.5mm", color: "#111827", fontWeight: 500, borderBottom: "0.5px solid #E5E7EB" }}>{item.itemName}</td>
-                    <td style={{ padding: "2.5mm 2.5mm", textAlign: "right", color: "#374151", borderBottom: "0.5px solid #E5E7EB" }}>{item.qty.toLocaleString("en-IN")}</td>
-                    <td style={{ padding: "2.5mm 2.5mm", textAlign: "left", color: "#374151", borderBottom: "0.5px solid #E5E7EB" }}>{item.unit}</td>
-                    <td style={{ padding: "2.5mm 2.5mm", textAlign: "right", color: "#374151", borderBottom: "0.5px solid #E5E7EB", fontVariantNumeric: "tabular-nums" }}>{formatINR(item.rate)}</td>
-                    <td style={{ padding: "2.5mm 2.5mm", textAlign: "right", color: "#374151", borderBottom: "0.5px solid #E5E7EB" }}>{item.discountPercent}</td>
-                    <td style={{ padding: "2.5mm 2.5mm", textAlign: "right", color: "#374151", borderBottom: "0.5px solid #E5E7EB" }}>{item.gstPercent}</td>
-                    <td style={{ padding: "2.5mm 2.5mm", textAlign: "right", color: "#111827", fontWeight: 600, borderBottom: "0.5px solid #E5E7EB", fontVariantNumeric: "tabular-nums" }}>{formatINR(amount)}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-
-          {/* ── Totals ── */}
-          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "6mm" }}>
-            <div style={{ width: "64mm", fontFamily: "Poppins, sans-serif", fontSize: "8.5pt" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", padding: "1.5mm 0", color: "#4B5563", borderBottom: "0.5px solid #E5E7EB" }}>
-                <span>Subtotal</span>
-                <span style={{ fontVariantNumeric: "tabular-nums" }}>₹{formatINR(subtotal)}</span>
-              </div>
-              {totalDiscount > 0 && (
-                <div style={{ display: "flex", justifyContent: "space-between", padding: "1.5mm 0", color: "#DC2626", borderBottom: "0.5px solid #E5E7EB" }}>
-                  <span>Discount</span>
-                  <span style={{ fontVariantNumeric: "tabular-nums" }}>−₹{formatINR(totalDiscount)}</span>
-                </div>
-              )}
-              <div style={{ display: "flex", justifyContent: "space-between", padding: "1.5mm 0", color: "#4B5563", borderBottom: "0.5px solid #E5E7EB" }}>
-                <span>GST</span>
-                <span style={{ fontVariantNumeric: "tabular-nums" }}>₹{formatINR(totalGST)}</span>
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between", padding: "2.5mm 3mm", background: "#1a3c2e", color: "#ffffff", borderRadius: "2mm", marginTop: "2mm", fontWeight: 700, fontSize: "9.5pt" }}>
-                <span>Total</span>
-                <span style={{ fontVariantNumeric: "tabular-nums" }}>₹{formatINR(grandTotal)}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* ── Notes ── */}
-          {quotation.notes && (
-            <div style={{ marginBottom: "6mm", padding: "3mm 4mm", background: "#F9FAFB", borderLeft: "3px solid #16a34a", borderRadius: "1mm", fontFamily: "Poppins, sans-serif" }}>
-              <div style={{ fontSize: "7pt", fontWeight: 700, color: "#6B7280", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "1mm" }}>Notes / Terms</div>
-              <div style={{ fontSize: "8pt", color: "#374151", whiteSpace: "pre-line" }}>{quotation.notes}</div>
-            </div>
-          )}
-
-          {/* ── Footer ── */}
-          <div style={{ borderTop: "1px solid #E5E7EB", paddingTop: "4mm", display: "flex", justifyContent: "space-between", alignItems: "flex-end", fontFamily: "Poppins, sans-serif" }}>
-            <div style={{ fontSize: "7pt", color: "#9CA3AF" }}>
-              <div>This is a computer-generated quotation.</div>
-              <div>For queries, contact: +91 80728 24034 &nbsp;|&nbsp; dynamicmdu2018@gmail.com</div>
-            </div>
-            <div style={{ textAlign: "right" }}>
-              <div style={{ height: "10mm", borderBottom: "1px solid #374151", width: "40mm", marginBottom: "1mm" }} />
-              <div style={{ fontSize: "7pt", color: "#6B7280" }}>Authorised Signatory</div>
-              <div style={{ fontSize: "7.5pt", fontWeight: 600, color: "#1a3c2e" }}>Dynamic Green Energy</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <>
+      {/* ─── Global print styles injected into <head> ─── */}
       <style>{`
         @media print {
+          * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+          body { margin: 0 !important; padding: 0 !important; background: #fff !important; }
+          @page { size: A4 portrait; margin: 12mm 14mm 12mm 14mm; }
           .no-print { display: none !important; }
-          body { margin: 0; background: white !important; }
-          @page { size: A4 portrait; margin: 0; }
-          #quotation-document { box-shadow: none !important; width: 100% !important; min-height: unset !important; }
+          .print-page { background: white !important; padding: 0 !important; margin: 0 !important; }
+          #quotation-doc { width: 100% !important; box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; }
         }
       `}</style>
-    </div>
+
+      <div className="min-h-screen bg-[#E8EDF2] print-page">
+
+        {/* ── Toolbar (hidden on print) ── */}
+        <div className="no-print bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between sticky top-0 z-20 shadow-sm">
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" size="sm" className="text-gray-500 gap-1 hover:text-gray-800" onClick={() => navigate("/quotations")}>
+              <ChevronLeft className="w-4 h-4" /> All Quotations
+            </Button>
+            <div className="h-5 w-px bg-gray-200" />
+            <span className="text-sm font-semibold text-gray-700 font-mono tracking-wide">{quotation.number}</span>
+            <span
+              className="text-xs font-bold px-2.5 py-0.5 rounded-full"
+              style={{ background: statusStyle.bg, color: statusStyle.text }}
+            >
+              {statusStyle.label}
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" className="gap-1.5 text-gray-600 hover:text-gray-900"
+              onClick={() => navigate(`/quotations/${params.id}/edit`)} data-testid="button-edit">
+              <Pencil className="w-3.5 h-3.5" /> Edit
+            </Button>
+            <Button size="sm" className="gap-1.5 bg-green-600 hover:bg-green-700 text-white"
+              onClick={() => window.print()} data-testid="button-print">
+              <Printer className="w-3.5 h-3.5" /> Print / PDF
+            </Button>
+          </div>
+        </div>
+
+        {/* ── A4 Document ── */}
+        <div className="py-8 px-4 print:py-0 print:px-0">
+          <div
+            id="quotation-doc"
+            style={{
+              background: "#ffffff",
+              width: "210mm",
+              minHeight: "297mm",
+              margin: "0 auto",
+              padding: "16mm 18mm 14mm 18mm",
+              boxShadow: "0 4px 32px rgba(0,0,0,0.12)",
+              boxSizing: "border-box",
+              fontFamily: "'Poppins', 'Segoe UI', Arial, sans-serif",
+              fontSize: "9pt",
+              color: "#1F2937",
+            }}
+          >
+
+            {/* ── Company Header ── */}
+            <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "5mm" }}>
+              <tbody>
+                <tr>
+                  <td style={{ width: "24mm", verticalAlign: "top", paddingRight: "5mm" }}>
+                    <img
+                      src="/images/dge-logo.jpg"
+                      alt="Dynamic Green Energy"
+                      style={{ width: "22mm", height: "22mm", objectFit: "contain", borderRadius: "3mm" }}
+                    />
+                  </td>
+                  <td style={{ verticalAlign: "top" }}>
+                    <div style={{ fontSize: "16pt", fontWeight: 800, color: "#14532D", lineHeight: 1.15, letterSpacing: "-0.01em" }}>
+                      M/s. Dynamic Green Energy
+                    </div>
+                    <div style={{ fontSize: "8pt", color: "#16A34A", fontStyle: "italic", marginBottom: "2.5mm", fontWeight: 500 }}>
+                      Reliable Solar Project Developers
+                    </div>
+                    <div style={{ fontSize: "7.5pt", color: "#4B5563", lineHeight: 1.8 }}>
+                      Flat No: 189, Thamirabarani Street, Park Town, Madurai – 625017, Tamil Nadu, India<br />
+                      Tel: +91 80728 24034 &nbsp;·&nbsp; dynamicmdu2018@gmail.com &nbsp;·&nbsp; www.dynamicgreenenergy.in<br />
+                      <span style={{ fontWeight: 700, color: "#374151" }}>GSTIN:</span> 33ATLPV5789M1ZK
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            {/* ── Horizontal Rule ── */}
+            <div style={{ borderTop: "2px solid #14532D", marginBottom: "5mm" }} />
+
+            {/* ── Quotation Title + Status ── */}
+            <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "4mm" }}>
+              <tbody>
+                <tr>
+                  <td style={{ verticalAlign: "top" }}>
+                    <div style={{ fontSize: "13.5pt", fontWeight: 800, color: "#111827", letterSpacing: "-0.01em" }}>
+                      Quotation {quotation.number}
+                    </div>
+                    <div style={{ fontSize: "8pt", color: "#6B7280", marginTop: "0.8mm", fontWeight: 500 }}>
+                      {quotation.type}
+                    </div>
+                  </td>
+                  <td style={{ verticalAlign: "top", textAlign: "right" }}>
+                    <span style={{
+                      display: "inline-block",
+                      fontSize: "7pt",
+                      fontWeight: 700,
+                      letterSpacing: "0.06em",
+                      padding: "1.5mm 4mm",
+                      borderRadius: "20mm",
+                      background: statusStyle.bg,
+                      color: statusStyle.text,
+                    }}>
+                      {statusStyle.label}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            {/* ── Meta Info ── */}
+            <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "6mm", fontSize: "8.5pt" }}>
+              <tbody>
+                <tr>
+                  <td style={{ paddingBottom: "1.5mm", width: "50%" }}>
+                    <span style={{ color: "#6B7280", fontWeight: 600 }}>Customer: </span>
+                    <span style={{ color: "#111827", fontWeight: 700 }}>{quotation.customerName}</span>
+                  </td>
+                  <td style={{ paddingBottom: "1.5mm" }}>
+                    <span style={{ color: "#6B7280", fontWeight: 600 }}>Created: </span>
+                    <span style={{ color: "#374151" }}>{formatDate(quotation.createdDate)}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span style={{ color: "#6B7280", fontWeight: 600 }}>Valid Until: </span>
+                    <span style={{ color: "#374151" }}>{formatDate(quotation.validUntil)}</span>
+                  </td>
+                  <td>
+                    <span style={{ color: "#6B7280", fontWeight: 600 }}>Ref: </span>
+                    <span style={{ color: "#374151", fontFamily: "monospace", fontSize: "8pt" }}>{quotation.number}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            {/* ── Items Table ── */}
+            <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "4mm", fontSize: "8pt" }}>
+              <thead>
+                <tr style={{ background: "#14532D" }}>
+                  {[
+                    { label: "#",            align: "center", w: "6mm"  },
+                    { label: "Item Description", align: "left",   w: "auto" },
+                    { label: "Qty",          align: "right",  w: "12mm" },
+                    { label: "Unit",         align: "left",   w: "14mm" },
+                    { label: "Rate (₹)",     align: "right",  w: "24mm" },
+                    { label: "Disc%",        align: "right",  w: "14mm" },
+                    { label: "GST%",         align: "right",  w: "12mm" },
+                    { label: "Amount (₹)",   align: "right",  w: "28mm" },
+                  ].map((col) => (
+                    <th key={col.label} style={{
+                      padding: "3mm 2.5mm",
+                      textAlign: col.align as "center" | "left" | "right",
+                      color: "#ffffff",
+                      fontWeight: 700,
+                      fontSize: "7.5pt",
+                      letterSpacing: "0.02em",
+                      width: col.w,
+                      whiteSpace: "nowrap",
+                    }}>
+                      {col.label}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {quotation.items.map((item, idx) => {
+                  const amount = calcAmount(item.qty, item.rate, item.discountPercent);
+                  return (
+                    <tr key={item.id} style={{ background: idx % 2 === 0 ? "#ffffff" : "#F9FAFB" }}>
+                      <td style={{ padding: "2.5mm 2.5mm", textAlign: "center", color: "#9CA3AF", borderBottom: "0.5px solid #E5E7EB", fontSize: "7.5pt" }}>{idx + 1}</td>
+                      <td style={{ padding: "2.5mm 2.5mm", color: "#111827", fontWeight: 600, borderBottom: "0.5px solid #E5E7EB" }}>{item.itemName}</td>
+                      <td style={{ padding: "2.5mm 2.5mm", textAlign: "right", color: "#374151", borderBottom: "0.5px solid #E5E7EB" }}>{item.qty.toLocaleString("en-IN")}</td>
+                      <td style={{ padding: "2.5mm 2.5mm", textAlign: "left",  color: "#6B7280", borderBottom: "0.5px solid #E5E7EB" }}>{item.unit}</td>
+                      <td style={{ padding: "2.5mm 2.5mm", textAlign: "right", color: "#374151", borderBottom: "0.5px solid #E5E7EB", fontVariantNumeric: "tabular-nums" }}>{formatINR(item.rate)}</td>
+                      <td style={{ padding: "2.5mm 2.5mm", textAlign: "right", color: "#374151", borderBottom: "0.5px solid #E5E7EB" }}>{item.discountPercent}%</td>
+                      <td style={{ padding: "2.5mm 2.5mm", textAlign: "right", color: "#374151", borderBottom: "0.5px solid #E5E7EB" }}>{item.gstPercent}%</td>
+                      <td style={{ padding: "2.5mm 2.5mm", textAlign: "right", color: "#111827", fontWeight: 700, borderBottom: "0.5px solid #E5E7EB", fontVariantNumeric: "tabular-nums" }}>{formatINR(amount)}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+
+            {/* ── Totals ── */}
+            <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "6mm" }}>
+              <tbody>
+                <tr>
+                  <td style={{ width: "60%" }} />
+                  <td style={{ width: "40%" }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "8.5pt" }}>
+                      <tbody>
+                        <tr>
+                          <td style={{ padding: "1.8mm 3mm", color: "#6B7280", borderBottom: "0.5px solid #E5E7EB" }}>Subtotal</td>
+                          <td style={{ padding: "1.8mm 3mm", textAlign: "right", color: "#111827", fontWeight: 600, borderBottom: "0.5px solid #E5E7EB", fontVariantNumeric: "tabular-nums" }}>₹{formatINR(subtotal)}</td>
+                        </tr>
+                        {totalDiscount > 0 && (
+                          <tr>
+                            <td style={{ padding: "1.8mm 3mm", color: "#DC2626", borderBottom: "0.5px solid #E5E7EB" }}>Discount</td>
+                            <td style={{ padding: "1.8mm 3mm", textAlign: "right", color: "#DC2626", fontWeight: 600, borderBottom: "0.5px solid #E5E7EB", fontVariantNumeric: "tabular-nums" }}>−₹{formatINR(totalDiscount)}</td>
+                          </tr>
+                        )}
+                        <tr>
+                          <td style={{ padding: "1.8mm 3mm", color: "#6B7280", borderBottom: "0.5px solid #E5E7EB" }}>GST</td>
+                          <td style={{ padding: "1.8mm 3mm", textAlign: "right", color: "#111827", fontWeight: 600, borderBottom: "0.5px solid #E5E7EB", fontVariantNumeric: "tabular-nums" }}>₹{formatINR(totalGST)}</td>
+                        </tr>
+                        <tr>
+                          <td colSpan={2} style={{ padding: "0.5mm" }} />
+                        </tr>
+                        <tr style={{ background: "#14532D" }}>
+                          <td style={{ padding: "3mm 4mm", color: "#ffffff", fontWeight: 800, fontSize: "10pt", borderRadius: "0" }}>Total</td>
+                          <td style={{ padding: "3mm 4mm", textAlign: "right", color: "#ffffff", fontWeight: 800, fontSize: "10pt", fontVariantNumeric: "tabular-nums" }}>₹{formatINR(grandTotal)}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            {/* ── Notes / Terms ── */}
+            {quotation.notes && (
+              <div style={{
+                marginBottom: "6mm",
+                padding: "3mm 4mm",
+                background: "#F0FDF4",
+                borderLeft: "3px solid #16A34A",
+                borderRadius: "1mm",
+              }}>
+                <div style={{ fontSize: "6.5pt", fontWeight: 800, color: "#6B7280", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: "1.5mm" }}>
+                  Notes &amp; Terms
+                </div>
+                <div style={{ fontSize: "8pt", color: "#374151", whiteSpace: "pre-line", lineHeight: 1.7 }}>
+                  {quotation.notes}
+                </div>
+              </div>
+            )}
+
+            {/* ── Footer ── */}
+            <div style={{ borderTop: "1.5px solid #E5E7EB", paddingTop: "4mm", marginTop: "auto" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "7.5pt" }}>
+                <tbody>
+                  <tr>
+                    <td style={{ verticalAlign: "bottom", color: "#9CA3AF", lineHeight: 1.7 }}>
+                      <div>This is a computer-generated quotation and does not require a physical signature.</div>
+                      <div>Contact: +91 80728 24034 &nbsp;·&nbsp; dynamicmdu2018@gmail.com</div>
+                    </td>
+                    <td style={{ verticalAlign: "bottom", textAlign: "right", width: "50mm" }}>
+                      <div style={{ height: "12mm", borderBottom: "1px solid #9CA3AF", marginBottom: "1.5mm" }} />
+                      <div style={{ color: "#6B7280", fontSize: "7pt" }}>Authorised Signatory</div>
+                      <div style={{ color: "#14532D", fontWeight: 700, fontSize: "7.5pt" }}>M/s. Dynamic Green Energy</div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>{/* end #quotation-doc */}
+        </div>
+
+      </div>
+    </>
   );
 }
